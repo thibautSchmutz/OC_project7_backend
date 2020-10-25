@@ -3,9 +3,44 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 //////////////////////////////////////////////////////////////////////////////////
+// @desc      Récupérer tous les utilisateurs
+// @route     GET /api/users/
+//////////////////////////////////////////////////////////////////////////////////
+
+exports.getAll = (req, res) => {
+  db.User.findAll()
+    .then((users) => res.send(users))
+    .catch((err) => console.log(err));
+};
+
+//////////////////////////////////////////////////////////////////////////////////
+// @desc      Récupérer un utilisateur
+// @route     GET /api/users/:id
+//////////////////////////////////////////////////////////////////////////////////
+
+exports.getOne = (req, res) => {
+  db.User.findByPk(req.params.id)
+    .then((user) => res.send(user))
+    .catch((err) => console.log(err));
+};
+
+//////////////////////////////////////////////////////////////////////////////////
+// @desc      Récupérer un utilisateur + ses posts
+// @route     GET /api/users/:id/complete
+//////////////////////////////////////////////////////////////////////////////////
+
+exports.getOneWithPosts = (req, res) => {
+  db.User.findAll({
+    where: { id: req.params.id },
+    include: [db.Post],
+  })
+    .then((user) => res.send(user))
+    .catch((err) => console.log(err));
+};
+
+//////////////////////////////////////////////////////////////////////////////////
 // @desc      Inscription d'un nouvel utilisateur
 // @route     POST /api/users/signup
-// @access    Public
 //////////////////////////////////////////////////////////////////////////////////
 
 exports.signup = (req, res) => {
@@ -36,8 +71,7 @@ exports.signup = (req, res) => {
 
 //////////////////////////////////////////////////////////////////////////////////
 // @desc      Connexion d'un utilisateur
-// @route     POST /api/auth/login
-// @access    Public
+// @route     POST /api/users/login
 //////////////////////////////////////////////////////////////////////////////////
 
 exports.login = (req, res) => {
@@ -74,9 +108,74 @@ exports.login = (req, res) => {
 };
 
 //////////////////////////////////////////////////////////////////////////////////
+// @desc      Modifier le compte utilisateur (sauf mot de passe)
+// @route     DELETE /api/users/:id/update
+//////////////////////////////////////////////////////////////////////////////////
+
+exports.updateUser = (req, res) => {
+  db.User.update(
+    {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      imageUrl: req.body.imageUrl,
+    },
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  )
+    .then(() => res.send("user updated"))
+    .catch((err) => console.log(err));
+};
+
+//////////////////////////////////////////////////////////////////////////////////
+// @desc      Modifier le mot de passe utilisateur
+// @route     DELETE /api/users/:id/update-password
+//////////////////////////////////////////////////////////////////////////////////
+
+exports.updateUserPassword = (req, res) => {
+  // Vérfier le mot de passe actuel
+  db.User.findAll({
+    where: {
+      id: req.params.id,
+    },
+    attributes: ["password"],
+  })
+    .then((user) => {
+      if (user.length === 0) {
+        res.status(401).send("Utilisateur introuvable");
+      }
+      bcrypt
+        .compare(req.body.password, user[0].password)
+        .then((valid) => {
+          if (!valid) {
+            return res.status(401).send("Mot de passe incorrect");
+          }
+          // hasher le nouveau mot de passe
+          bcrypt.hash(req.body.newPassword, 6).then((hash) => {
+            // enregistrer en base de nouveau mot de passe
+            db.User.update(
+              {
+                password: hash,
+              },
+              { where: { id: req.params.id } }
+            )
+              .then((userUpdated) =>
+                res.status(201).send("mot de passe modifié")
+              )
+              .catch((err) => console.log(err));
+          });
+        })
+        .catch((error) => res.status(500).send("error de cryptage"));
+    })
+    .catch((error) => res.status(500).json("error Generale"));
+};
+
+//////////////////////////////////////////////////////////////////////////////////
 // @desc      Suppression d'un compte utilisateur
-// @route     DELETE /api/users/delete/:id
-// @access    Authorized (propriétaire du compte ou administrateur)
+// @route     DELETE /api/users/:id/delete
 //////////////////////////////////////////////////////////////////////////////////
 
 exports.deleteUser = (req, res) => {
