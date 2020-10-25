@@ -49,3 +49,16 @@ exports.createPost = (req, res) => {
     .then((post) => res.send(post))
     .catch((err) => console.log(err));
 };
+
+//////////////////////////////////////////////////////////////////////////////////
+// @desc      Suppression d'un post
+// @route     DELETE /api/posts/:id/delete
+//////////////////////////////////////////////////////////////////////////////////
+
+exports.deletePost = (req, res) => {
+  db.Post.destroy({
+    where: { id: req.params.id },
+  })
+    .then(() => res.send("post deleted"))
+    .catch((err) => console.log(err));
+};
