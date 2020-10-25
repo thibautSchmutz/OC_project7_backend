@@ -7,6 +7,7 @@ const {
   getOne,
   createPost,
   deletePost,
+  updatePost,
 } = require("../controllers/post");
 
 // Déclaration du router express
@@ -16,6 +17,7 @@ const router = express.Router();
 router.get("/", getAll);
 router.post("/new", createPost);
 router.get("/:id", getOne);
+router.put("/:id/update", updatePost);
 router.delete("/:id/delete", deletePost);
 
 // router.post("/login", login);

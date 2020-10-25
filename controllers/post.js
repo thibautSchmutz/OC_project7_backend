@@ -51,6 +51,27 @@ exports.createPost = (req, res) => {
 };
 
 //////////////////////////////////////////////////////////////////////////////////
+// @desc      Modifier un post
+// @route     PUT /api/posts/:id/update
+//////////////////////////////////////////////////////////////////////////////////
+
+exports.updatePost = (req, res) => {
+  db.Post.update(
+    {
+      content: req.body.content,
+      imageUrl: req.body.imageUrl,
+    },
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  )
+    .then(() => res.send("post updated"))
+    .catch((err) => console.log(err));
+};
+
+//////////////////////////////////////////////////////////////////////////////////
 // @desc      Suppression d'un post
 // @route     DELETE /api/posts/:id/delete
 //////////////////////////////////////////////////////////////////////////////////
