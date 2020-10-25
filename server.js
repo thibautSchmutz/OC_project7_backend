@@ -11,6 +11,8 @@ app.use(express.json());
 // routes
 const userRoutes = require("./routes/user");
 app.use("/api/users", userRoutes);
+const postRoutes = require("./routes/post");
+app.use("/api/posts", postRoutes);
 
 db.sequelize.sync().then(() =>
   app.listen(PORT, () => {
