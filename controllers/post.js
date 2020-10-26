@@ -8,7 +8,19 @@ const db = require("../models");
 exports.getAll = (req, res) => {
   db.Post.findAll({
     where: { parent_post_id: null },
-    include: db.Post,
+    include: [
+      {
+        model: db.Post,
+      },
+      {
+        model: db.User,
+        attributes: ["id"],
+      },
+    ],
+    // {
+    //   model: User,
+    //   // through: { attributes: [Like] }
+    // },
   })
     .then((posts) => res.send(posts))
     .catch((err) => console.log(err));
@@ -24,7 +36,15 @@ exports.getOne = (req, res) => {
     where: {
       id: req.params.id,
     },
-    include: db.Post,
+    include: [
+      {
+        model: db.Post,
+      },
+      {
+        model: db.User,
+        attributes: ["id"],
+      },
+    ],
   })
     .then((post) => res.send(post))
     .catch((err) => console.log(err));

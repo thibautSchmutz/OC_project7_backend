@@ -20,7 +20,5 @@ router.get("/:id", getOne);
 router.put("/:id/update", updatePost);
 router.delete("/:id/delete", deletePost);
 
-// router.post("/login", login);
-
 // Exportation du module
 module.exports = router;
