@@ -59,7 +59,6 @@ exports.signup = (req, res) => {
             lastName: req.body.lastName,
             email: req.body.email,
             password: hash,
-            // imageUrl: req.body.imageUrl,
             imageUrl: `${req.protocol}://${req.get("host")}/images/${
               req.file.filename
             }`,
@@ -121,7 +120,9 @@ exports.updateUser = (req, res) => {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
-      imageUrl: req.body.imageUrl,
+      imageUrl: `${req.protocol}://${req.get("host")}/images/${
+        req.file.filename
+      }`,
     },
     {
       where: {
