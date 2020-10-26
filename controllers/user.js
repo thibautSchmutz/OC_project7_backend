@@ -39,7 +39,7 @@ exports.getOneWithPosts = (req, res) => {
 };
 
 //////////////////////////////////////////////////////////////////////////////////
-// @desc      Inscription d'un nouvel utilisateur
+// @desc      Création d'un nouvel utilisateur
 // @route     POST /api/users/signup
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -59,7 +59,10 @@ exports.signup = (req, res) => {
             lastName: req.body.lastName,
             email: req.body.email,
             password: hash,
-            imageUrl: req.body.imageUrl,
+            // imageUrl: req.body.imageUrl,
+            imageUrl: `${req.protocol}://${req.get("host")}/images/${
+              req.file.filename
+            }`,
           })
             .then((newUser) => res.status(201).send(newUser))
             .catch((err) => console.log(err));

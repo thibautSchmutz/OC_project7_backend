@@ -1,5 +1,7 @@
 const express = require("express");
-// const nocache = require("nocache");
+
+// importation de multer pour la gestion des images
+const multer = require("../middlewares/multer-config");
 
 // Importation des méthodes du controller
 const {
@@ -18,7 +20,7 @@ const router = express.Router();
 
 // Assignation des routes
 router.get("/", getAll);
-router.post("/signup", signup);
+router.post("/signup", multer, signup);
 router.post("/login", login);
 router.get("/:id", getOne);
 router.get("/:id/complete", getOneWithPosts);
