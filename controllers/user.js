@@ -54,15 +54,24 @@ exports.signup = (req, res) => {
       } else {
         // création de l'objet User et enregistrement en base
         bcrypt.hash(req.body.password, 6).then((hash) => {
-          db.User.create({
+          let userObject = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
             password: hash,
-            imageUrl: `${req.protocol}://${req.get("host")}/images/${
-              req.file.filename
-            }`,
-          })
+          };
+
+          // ajout d'une image si le user en upload une
+          if (req.hasOwnProperty("file")) {
+            userObject = {
+              ...userObject,
+              imageUrl: `${req.protocol}://${req.get("host")}/images/${
+                req.file.filename
+              }`,
+            };
+          }
+
+          db.User.create(userObject)
             .then((newUser) => res.status(201).send(newUser))
             .catch((err) => console.log(err));
         });
@@ -112,21 +121,27 @@ exports.login = (req, res) => {
 //////////////////////////////////////////////////////////////////////////////////
 
 exports.updateUser = (req, res) => {
-  db.User.update(
-    {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
+  let userObject = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+  };
+
+  // ajout d'une image si le user en upload une
+  if (req.hasOwnProperty("file")) {
+    userObject = {
+      ...userObject,
       imageUrl: `${req.protocol}://${req.get("host")}/images/${
         req.file.filename
       }`,
+    };
+  }
+
+  db.User.update(userObject, {
+    where: {
+      id: req.params.id,
     },
-    {
-      where: {
-        id: req.params.id,
-      },
-    }
-  )
+  })
     .then(() => res.send("user updated"))
     .catch((err) => console.log(err));
 };
