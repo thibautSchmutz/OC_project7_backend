@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
 
+// chargement des variables d'environnement
+dotenv.config({ path: "./config/.env" });
+
 const db = require("./models");
 const PORT = process.env.PORT || 5000;
 
