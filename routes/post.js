@@ -1,5 +1,7 @@
 const express = require("express");
-// const nocache = require("nocache");
+
+// Importation de middleware
+const auth = require("../middlewares/auth");
 
 // Importation des méthodes du controller
 const {
@@ -14,11 +16,11 @@ const {
 const router = express.Router();
 
 // Assignation des routes
-router.get("/", getAll);
-router.post("/new", createPost);
-router.get("/:id", getOne);
-router.put("/:id/update", updatePost);
-router.delete("/:id/delete", deletePost);
+router.get("/", auth, getAll);
+router.post("/new", auth, createPost);
+router.get("/:id", auth, getOne);
+router.put("/:id/update", auth, updatePost);
+router.delete("/:id/delete", auth, deletePost);
 
 // Exportation du module
 module.exports = router;

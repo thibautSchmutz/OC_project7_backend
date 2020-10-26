@@ -1,5 +1,7 @@
 const express = require("express");
-// const nocache = require("nocache");
+
+// Importation de middleware
+const auth = require("../middlewares/auth");
 
 // Importation des méthodes du controller
 const { addLike, deleteLike } = require("../controllers/like");
@@ -8,8 +10,8 @@ const { addLike, deleteLike } = require("../controllers/like");
 const router = express.Router();
 
 // Assignation des routes
-router.post("/:postid/:userid/new", addLike);
-router.delete("/:postid/:userid/delete", deleteLike);
+router.post("/:postid/:userid/new", auth, addLike);
+router.delete("/:postid/:userid/delete", auth, deleteLike);
 
 // Exportation du module
 module.exports = router;
