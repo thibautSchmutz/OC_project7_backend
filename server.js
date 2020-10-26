@@ -13,6 +13,8 @@ const userRoutes = require("./routes/user");
 app.use("/api/users", userRoutes);
 const postRoutes = require("./routes/post");
 app.use("/api/posts", postRoutes);
+const likeRoutes = require("./routes/like");
+app.use("/api/likes", likeRoutes);
 
 db.sequelize.sync().then(() =>
   app.listen(PORT, () => {

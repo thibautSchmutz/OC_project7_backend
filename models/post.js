@@ -12,12 +12,12 @@ module.exports = (sequelize, DataTypes) => {
   Post.associate = (models) => {
     Post.hasMany(models.Post, {
       foreignKey: "parent_post_id",
-      onDelete: "cascade",
+      onDelete: "CASCADE",
     });
     Post.belongsToMany(models.User, {
-      as: "post_id",
-      through: "Likes",
-      onDelete: "CASCADE",
+      foreignKey: "post_id",
+      allowNull: false,
+      through: "Like",
     });
   };
 
