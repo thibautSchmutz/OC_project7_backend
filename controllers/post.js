@@ -1,7 +1,7 @@
 const db = require("../models");
 
 //////////////////////////////////////////////////////////////////////////////////
-// @desc      Récupérer tous les posts et commentaires associés
+// @desc      Récupérer tous les posts avec leurs commentaires et likes associés
 // @route     GET /api/posts/
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -39,7 +39,7 @@ exports.getAll = (req, res) => {
 };
 
 //////////////////////////////////////////////////////////////////////////////////
-// @desc      Récupérer un post avec ses commentaires
+// @desc      Récupérer un post avec ses commentaires et likes ou un commentaire seul avec ses likes
 // @route     GET /api/posts/:id
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -51,10 +51,22 @@ exports.getOne = (req, res) => {
     include: [
       {
         model: db.Post,
+        as: "Comments",
+        include: {
+          model: db.User,
+          attributes: ["firstName", "lastName", "imageUrl"],
+          as: "Creator",
+        },
       },
       {
         model: db.User,
-        attributes: ["id"],
+        attributes: ["firstName", "lastName"],
+        as: "Likes",
+      },
+      {
+        model: db.User,
+        attributes: ["firstName", "lastName", "imageUrl"],
+        as: "Creator",
       },
     ],
   })
