@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "CASCADE",
     });
     User.belongsToMany(models.Post, {
-      foreignKey: "user_id",
+      foreignKey: "like_user_id",
       allowNull: false,
       through: models.Like,
     });

@@ -16,10 +16,14 @@ module.exports = (sequelize, DataTypes) => {
       as: "Comments",
     });
     Post.belongsToMany(models.User, {
-      foreignKey: "post_id",
+      foreignKey: "like_post_id",
       allowNull: false,
       through: models.Like,
       as: "Likes",
+    });
+    Post.belongsTo(models.User, {
+      foreignKey: "user_id",
+      as: "Creator",
     });
   };
 
