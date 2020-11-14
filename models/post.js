@@ -13,11 +13,13 @@ module.exports = (sequelize, DataTypes) => {
     Post.hasMany(models.Post, {
       foreignKey: "parent_post_id",
       onDelete: "CASCADE",
+      as: "Comments",
     });
     Post.belongsToMany(models.User, {
       foreignKey: "post_id",
       allowNull: false,
-      through: "Like",
+      through: models.Like,
+      as: "Likes",
     });
   };
 

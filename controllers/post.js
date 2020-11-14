@@ -11,10 +11,12 @@ exports.getAll = (req, res) => {
     include: [
       {
         model: db.Post,
+        as: "Comments",
       },
       {
         model: db.User,
-        attributes: ["id"],
+        attributes: ["firstName", "lastName"],
+        as: "Likes",
       },
     ],
     // {
