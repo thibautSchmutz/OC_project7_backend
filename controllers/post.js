@@ -84,13 +84,24 @@ exports.getOne = (req, res) => {
 //////////////////////////////////////////////////////////////////////////////////
 
 exports.createPost = (req, res) => {
-  db.Post.create({
-    content: req.body.content,
-    imageUrl: req.body.imageUrl,
+  let postObject = {
     user_id: req.body.user_id,
+    content: req.body.content,
     parent_post_id: req.body.parent_post_id,
-  })
-    .then((post) => res.send(post))
+  };
+
+  // ajout d'une image si le user en upload une
+  if (req.hasOwnProperty("file")) {
+    postObject = {
+      ...postObject,
+      imageUrl: `${req.protocol}://${req.get("host")}/images/${
+        req.file.filename
+      }`,
+    };
+  }
+
+  db.Post.create(postObject)
+    .then((post) => res.status(201).send(post))
     .catch((err) => console.log(err));
 };
 

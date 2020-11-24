@@ -1,6 +1,7 @@
 const express = require("express");
 
 // Importation de middleware
+const multer = require("../middlewares/multer-config");
 const auth = require("../middlewares/auth");
 
 // Importation des méthodes du controller
@@ -17,7 +18,7 @@ const router = express.Router();
 
 // Assignation des routes
 router.get("/", auth, getAll);
-router.post("/new", auth, createPost);
+router.post("/new", auth, multer, createPost);
 router.get("/:id", auth, getOne);
 router.put("/:id/update", auth, updatePost);
 router.delete("/:id/delete", auth, deletePost);
