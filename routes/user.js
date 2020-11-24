@@ -25,7 +25,7 @@ router.post("/signup", multer, signup);
 router.post("/login", login);
 router.get("/:id", auth, getOne);
 router.get("/:id/complete", auth, getOneWithPosts);
-router.put("/:id/update", multer, auth, updateUser);
+router.put("/:id/update", auth, multer, updateUser);
 router.put("/:id/update-password", auth, updateUserPassword);
 router.delete("/:id/delete", auth, deleteUser);
 // router.post("/login", login);

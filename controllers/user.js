@@ -50,7 +50,7 @@ exports.signup = (req, res) => {
   })
     .then((user) => {
       if (user.length !== 0) {
-        res.status(401).send("Ce compte existe déjà");
+        res.status(401).send("Adresse E-mail déjà utilisée");
       } else {
         // création de l'objet User et enregistrement en base
         bcrypt.hash(req.body.password, 6).then((hash) => {

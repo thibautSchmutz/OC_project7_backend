@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     imageUrl: {
       type: DataTypes.STRING,
       defaultValue:
-        "https://pixabay.com/get/57e6d4434f55af14f1dc8460da29317e163adaed525578_640.png",
+        "http://localhost:5000/images/Photo-profil-générique.png1605702446100.png",
     },
   });
 
