@@ -11,22 +11,22 @@ exports.getAll = (req, res) => {
     include: [
       {
         model: db.Post,
-        as: "Comments",
+        as: "comments",
         include: {
           model: db.User,
           attributes: ["firstName", "lastName", "imageUrl"],
-          as: "Creator",
+          as: "creator",
         },
       },
       {
         model: db.User,
         attributes: ["firstName", "lastName"],
-        as: "Likes",
+        as: "likes",
       },
       {
         model: db.User,
         attributes: ["firstName", "lastName", "imageUrl"],
-        as: "Creator",
+        as: "creator",
       },
     ],
     // {
@@ -51,22 +51,22 @@ exports.getOne = (req, res) => {
     include: [
       {
         model: db.Post,
-        as: "Comments",
+        as: "comments",
         include: {
           model: db.User,
           attributes: ["firstName", "lastName", "imageUrl"],
-          as: "Creator",
+          as: "creator",
         },
       },
       {
         model: db.User,
         attributes: ["firstName", "lastName"],
-        as: "Likes",
+        as: "likes",
       },
       {
         model: db.User,
         attributes: ["firstName", "lastName", "imageUrl"],
-        as: "Creator",
+        as: "creator",
       },
     ],
   })
@@ -128,7 +128,7 @@ exports.updatePost = (req, res) => {
 
 //////////////////////////////////////////////////////////////////////////////////
 // @desc      Suppression d'un post
-// @route     DELETE /api/posts/:id/delete
+// @route     DELETE /api/posts/delete/:id
 //////////////////////////////////////////////////////////////////////////////////
 
 exports.deletePost = (req, res) => {

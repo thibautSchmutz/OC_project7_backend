@@ -21,7 +21,7 @@ router.get("/", auth, getAll);
 router.post("/new", auth, multer, createPost);
 router.get("/:id", auth, getOne);
 router.put("/:id/update", auth, updatePost);
-router.delete("/:id/delete", auth, deletePost);
+router.delete("/delete/:id", auth, deletePost);
 
 // Exportation du module
 module.exports = router;
