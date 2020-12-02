@@ -1,4 +1,6 @@
 const db = require("../models");
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
 //////////////////////////////////////////////////////////////////////////////////
 // @desc      Ajouter un Like
@@ -23,8 +25,12 @@ exports.addLike = (req, res) => {
 exports.deleteLike = (req, res) => {
   db.like
     .destroy({
-      where: { like_post_id: req.params.postid },
-      where: { like_user_id: req.params.userid },
+      where: {
+        [Op.and]: [
+          { like_post_id: req.params.postid },
+          { like_user_id: req.params.userid },
+        ],
+      },
     })
     .then(() => res.send("like deleted"))
     .catch((err) => console.log(err));

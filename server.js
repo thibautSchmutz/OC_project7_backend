@@ -11,15 +11,15 @@ dotenv.config({ path: "./config/.env" });
 const db = require("./models");
 const PORT = process.env.PORT || 5000;
 
+// Formats de requête acceptée
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Ajout des paramètres de securités au headers des responses (contient une méthode xssFilter()).
 app.use(helmet());
 
 // Gestion des CORS (ouvert sur toutes les routes)
 app.use(cors());
-
-// Formats de requête acceptée
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 // Création d'un dossier statique pour la gestion des images
 app.use("/images", express.static(path.join(__dirname, "images")));
