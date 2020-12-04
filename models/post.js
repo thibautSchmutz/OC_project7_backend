@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   // Définition de la table et des colonnes
   const Post = sequelize.define("Post", {
     content: {
-      type: DataTypes.STRING(400),
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     imageUrl: DataTypes.STRING,
