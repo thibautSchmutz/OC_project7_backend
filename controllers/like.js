@@ -13,7 +13,7 @@ exports.addLike = (req, res) => {
       like_post_id: req.params.postid,
       like_user_id: req.params.userid,
     })
-    .then((like) => res.send("post liked"))
+    .then((like) => res.json("post liked"))
     .catch((err) => console.log(err));
 };
 
@@ -32,6 +32,6 @@ exports.deleteLike = (req, res) => {
         ],
       },
     })
-    .then(() => res.send("like deleted"))
+    .then(() => res.json("like deleted"))
     .catch((err) => console.log(err));
 };

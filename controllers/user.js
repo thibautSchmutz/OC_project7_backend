@@ -94,13 +94,13 @@ exports.login = (req, res) => {
   })
     .then((user) => {
       if (user.length === 0) {
-        res.status(401).send("Utilisateur introuvable");
+        res.status(401).json("Utilisateur introuvable");
       }
       bcrypt
         .compare(req.body.password, user[0].password)
         .then((valid) => {
           if (!valid) {
-            return res.status(401).send("Mot de passe incorrect");
+            return res.status(401).json("Mot de passe incorrect");
           }
           res.status(200).send({
             userId: user[0].id,
@@ -110,7 +110,7 @@ exports.login = (req, res) => {
             ),
           });
         })
-        .catch((error) => res.status(500).send("error de JWT"));
+        .catch((error) => res.status(500).json("error de JWT"));
     })
     .catch((error) => res.status(500).json("error Generale"));
 };
@@ -142,7 +142,11 @@ exports.updateUser = (req, res) => {
       id: req.params.id,
     },
   })
-    .then(() => res.send("user updated"))
+    .then(() => {
+      db.User.findByPk(req.params.id)
+        .then((user) => res.send(user))
+        .catch((err) => console.log(err));
+    })
     .catch((err) => console.log(err));
 };
 
@@ -161,13 +165,13 @@ exports.updateUserPassword = (req, res) => {
   })
     .then((user) => {
       if (user.length === 0) {
-        res.status(401).send("Utilisateur introuvable");
+        res.status(401).json("Utilisateur introuvable");
       }
       bcrypt
         .compare(req.body.password, user[0].password)
         .then((valid) => {
           if (!valid) {
-            return res.status(401).send("Mot de passe incorrect");
+            return res.status(401).json("Mot de passe incorrect");
           }
           // hasher le nouveau mot de passe
           bcrypt.hash(req.body.newPassword, 6).then((hash) => {
@@ -179,12 +183,12 @@ exports.updateUserPassword = (req, res) => {
               { where: { id: req.params.id } }
             )
               .then((userUpdated) =>
-                res.status(201).send("mot de passe modifié")
+                res.status(201).json("mot de passe modifié")
               )
               .catch((err) => console.log(err));
           });
         })
-        .catch((error) => res.status(500).send("error de cryptage"));
+        .catch((error) => res.status(500).json("error de cryptage"));
     })
     .catch((error) => res.status(500).json("error Generale"));
 };
@@ -198,6 +202,6 @@ exports.deleteUser = (req, res) => {
   db.User.destroy({
     where: { id: req.params.id },
   })
-    .then(() => res.send("user deleted"))
+    .then(() => res.json("user deleted"))
     .catch((err) => console.log(err));
 };

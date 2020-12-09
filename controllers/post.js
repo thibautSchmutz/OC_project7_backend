@@ -122,7 +122,7 @@ exports.updatePost = (req, res) => {
       },
     }
   )
-    .then(() => res.send("post updated"))
+    .then(() => res.json("post updated"))
     .catch((err) => console.log(err));
 };
 
@@ -135,6 +135,6 @@ exports.deletePost = (req, res) => {
   db.Post.destroy({
     where: { id: req.params.id },
   })
-    .then(() => res.send("post deleted"))
+    .then(() => res.json("post deleted"))
     .catch((err) => console.log(err));
 };
