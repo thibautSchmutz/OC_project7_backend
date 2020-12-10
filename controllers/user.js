@@ -199,9 +199,15 @@ exports.updateUserPassword = (req, res) => {
 //////////////////////////////////////////////////////////////////////////////////
 
 exports.deleteUser = (req, res) => {
-  db.User.destroy({
-    where: { id: req.params.id },
+  db.Post.destroy({
+    where: { user_id: req.params.id },
   })
-    .then(() => res.json("user deleted"))
+    .then(() => {
+      db.User.destroy({
+        where: { id: req.params.id },
+      })
+        .then(() => res.status(204).json("user deleted"))
+        .catch((err) => console.log(err));
+    })
     .catch((err) => console.log(err));
 };

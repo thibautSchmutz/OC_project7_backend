@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Post, {
       foreignKey: "user_id",
       allowNull: false,
-      onDelete: "CASCADE",
+      onDelete: "cascade",
     });
     User.belongsToMany(models.Post, {
       foreignKey: "like_user_id",
