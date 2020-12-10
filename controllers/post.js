@@ -72,10 +72,6 @@ exports.getOne = (req, res) => {
   })
     .then((post) => res.send(post))
     .catch((err) => console.log(err));
-
-  // db.Post.findByPk(req.params.id)
-  //   .then((post) => res.send(post))
-  //   .catch((err) => console.log(err));
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -101,7 +97,7 @@ exports.createPost = (req, res) => {
   }
 
   db.Post.create(postObject)
-    .then((post) => res.status(201).send(post))
+    .then((post) => res.send(post))
     .catch((err) => console.log(err));
 };
 
